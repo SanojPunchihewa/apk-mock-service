@@ -1,0 +1,5 @@
+[wso2.apk.publisher]
+PUBLISHER_PORT = 9443
+
+[wso2.apk.devportal]
+DEVPORTAL_PORT = 9444
