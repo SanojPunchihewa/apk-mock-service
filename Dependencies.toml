@@ -304,6 +304,7 @@ dependencies = [
 ]
 modules = [
 	{org = "wso2", packageName = "apk", moduleName = "apk"},
+	{org = "wso2", packageName = "apk", moduleName = "apk.admin"},
 	{org = "wso2", packageName = "apk", moduleName = "apk.devportal"},
 	{org = "wso2", packageName = "apk", moduleName = "apk.publisher"}
 ]

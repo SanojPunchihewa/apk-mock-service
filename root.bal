@@ -1,5 +1,6 @@
 import apk.publisher as _;
 import apk.devportal as _;
+import apk.admin as _;
 import ballerina/http;
 
 service on new http:Listener(8080) {
