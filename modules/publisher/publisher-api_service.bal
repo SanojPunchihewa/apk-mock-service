@@ -6,11 +6,14 @@ listener http:Listener ep0 = new (9443);
 service /api/am/publisher/v3 on ep0 {
     resource function get apis(@http:Header string? 'x\-wso2\-tenant, string? query, @http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0, string sortBy = "createdTime", string sortOrder = "desc", @http:Header string? accept = "application/json") returns APIList|http:NotModified|NotAcceptableError {
         APIInfo[] infoList = [info1, info2];
-        APIList list = {count: 2, list: infoList};
+        APIList list = {count: 2, list: infoList, pagination: {offset: 0, 'limit: 10, total: 2}};
         return list;
     }
     resource function post apis(@http:Payload API payload, string openAPIVersion = "v3") returns CreatedAPI|BadRequestError|UnsupportedMediaTypeError {
-        API api = payload;
+        API api = createdAPI;
+        api.name = payload.get("name").toString();
+        api.context = payload.get("context").toString();
+        api.'version = payload.get("version").toString();
         // API api2 = {
         //     id: "123",
         //     name: payload.get("name").toString(),
@@ -35,8 +38,9 @@ service /api/am/publisher/v3 on ep0 {
     // }
     // resource function put apis/[string apiId]/'reimport\-service() returns API|NotFoundError|InternalServerErrorError {
     // }
-    // resource function get apis/[string apiId]/swagger(@http:Header string? 'if\-none\-match) returns string|http:NotModified|NotFoundError|NotAcceptableError {
-    // }
+    resource function get apis/[string apiId]/swagger(@http:Header string? 'if\-none\-match) returns string|http:NotModified|NotFoundError|NotAcceptableError {
+        return sampleSwagger.toString();
+    }
     // resource function put apis/[string apiId]/swagger(@http:Header string? 'if\-match, @http:Payload json payload) returns string|BadRequestError|ForbiddenError|NotFoundError|PreconditionFailedError {
     // }
     // resource function post apis/[string apiId]/'generate\-mock\-scripts(@http:Header string? 'if\-none\-match) returns string|http:NotModified|NotFoundError|NotAcceptableError {
@@ -177,8 +181,9 @@ service /api/am/publisher/v3 on ep0 {
     // }
     // resource function post subscriptions/'unblock\-subscription(string subscriptionId, @http:Header string? 'if\-match) returns http:Ok|BadRequestError|NotFoundError|PreconditionFailedError {
     // }
-    // resource function get 'throttling\-policies/[string policyLevel](@http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0) returns ThrottlingPolicyList|http:NotModified|NotAcceptableError {
-    // }
+    resource function get 'throttling\-policies/[string policyLevel](@http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0) returns ThrottlingPolicyList|http:NotModified|NotAcceptableError {
+        return policies;
+    }
     // resource function get 'throttling\-policies/streaming/subscription(@http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0) returns SubscriptionPolicyList|http:NotModified|NotAcceptableError {
     // }
     // resource function get 'throttling\-policies/[string policyLevel]/[string policyName](@http:Header string? 'if\-none\-match) returns ThrottlingPolicy|http:NotModified|NotFoundError|NotAcceptableError {
