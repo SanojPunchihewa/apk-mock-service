@@ -5,6 +5,16 @@ configurable int PUBLISHER_PORT = 9443;
 
 listener http:Listener ep0 = new (PUBLISHER_PORT);
 
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: true,
+        allowHeaders: ["*"],
+        exposeHeaders: ["*"],
+        maxAge: 84900
+    }
+}
+
 service /api/am/publisher/v3 on ep0 {
     resource function get apis(@http:Header string? 'x\-wso2\-tenant, string? query, @http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0, string sortBy = "createdTime", string sortOrder = "desc", @http:Header string? accept = "application/json") returns APIList|http:NotModified|NotAcceptableError {
         APIInfo[] infoList = [info1, info2];
