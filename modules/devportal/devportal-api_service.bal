@@ -5,6 +5,16 @@ configurable int DEVPORTAL_PORT = 9443;
 
 listener http:Listener ep0 = new (DEVPORTAL_PORT);
 
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: true,
+        allowHeaders: ["*"],
+        exposeHeaders: ["*"],
+        maxAge: 84900
+    }
+}
+
 service /api/am/devportal/v2 on ep0 {
     resource function get apis(@http:Header string? 'x\-wso2\-tenant, string? query, @http:Header string? 'if\-none\-match, int 'limit = 25, int offset = 0) returns APIList|NotAcceptableError {
         return apiList;

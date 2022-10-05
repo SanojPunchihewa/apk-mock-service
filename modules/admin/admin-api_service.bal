@@ -5,6 +5,16 @@ configurable int ADMIN_PORT = 9443;
 
 listener http:Listener ep0 = new (ADMIN_PORT);
 
+@http:ServiceConfig {
+    cors: {
+        allowOrigins: ["*"],
+        allowCredentials: true,
+        allowHeaders: ["*"],
+        exposeHeaders: ["*"],
+        maxAge: 84900
+    }
+}
+
 service /api/am/admin/v3 on ep0 {
     // resource function get throttling/policies/search(string? query) returns ThrottlePolicyDetailsList {
     // }
