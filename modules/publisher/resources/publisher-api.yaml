@@ -2721,21 +2721,7 @@ components:
             $ref: '#/components/schemas/APIInfo'
         pagination:
           $ref: '#/components/schemas/Pagination'
-    APIMetadataList:
-      title: API metadata List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of APIs returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/APIMetadata'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+
     APIInfo:
       title: API Info object with basic API details.
       type: object
@@ -2819,69 +2805,7 @@ components:
         advertiseOnly:
           type: boolean
           example: true
-    APIMetadata:
-      title: API Info object with basic minimal API details.
-      type: object
-      properties:
-        id:
-          type: string
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          example: CalculatorAPI
-        context:
-          type: string
-          example: CalculatorAPI
-        version:
-          type: string
-          example: 1.0.0
-        provider:
-          type: string
-          description: |
-            If the provider value is not given, the user invoking the API will be used as the provider.
-          example: admin
-    Topic:
-      title: Topic object
-      required:
-        - name
-        - mode
-        - description
-      type: object
-      properties:
-        id:
-          type: string
-          description: id
-          readOnly: true
-          example: 1222344
-        name:
-          maxLength: 50
-          minLength: 1
-          pattern: '(^[^~!@#;:%^*()+={}|\\<>"'',&$\s+\[\]\/]*$)'
-          type: string
-          example: PizzaShackAPI
-        mode:
-          maxLength: 20
-          type: string
-          example: Pizza
-        description:
-          maxLength: 32766
-          type: string
-          example: This is a simple API for Pizza Shack online pizza delivery store.
-    TopicList:
-      title: Topic List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Topics returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Topic'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+
     API:
       title: API object
       required:
@@ -3456,29 +3380,6 @@ components:
           readOnly: true
           type: string
           format: date-time
-    AuditReport:
-      title: Resource for Audit Report
-      type: object
-      properties:
-        report:
-          type: string
-          description: |
-            The API Security Audit Report
-        grade:
-          type: string
-          description: |
-            The overall grade of the Security Audit
-          example: "27.95"
-        numErrors:
-          type: integer
-          description: |
-            The number of errors in the API Definition
-          example: 20
-        externalApiId:
-          type: string
-          description: |
-            The External API ID
-          example: fd21f9f7-3674-49cf-8a83-dca401f635de
     APIProductList:
       title: API Product List
       type: object
@@ -3843,15 +3744,6 @@ components:
             $ref: '#/components/schemas/ResourcePath'
         pagination:
           $ref: '#/components/schemas/Pagination'
-    APIProductOutdatedStatus:
-      title: APIProduct is outdated status
-      type: object
-      properties:
-        isOutdated:
-          type: boolean
-          description: |
-            Indicates if an API Product is outdated
-          example: true
     APIProductBusinessInformation:
       type: object
       properties:
@@ -3893,31 +3785,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Claim'
-    Application:
-      title: Application
-      required:
-        - name
-        - throttlingTier
-      type: object
-      properties:
-        applicationId:
-          type: string
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          example: CalculatorApp
-        subscriber:
-          type: string
-          example: admin
-        throttlingTier:
-          type: string
-          example: Unlimited
-        description:
-          type: string
-          example: Sample calculator application
-        groupId:
-          type: string
-          example: ""
     ApplicationInfo:
       title: Application info object with basic application details
       type: object
@@ -4039,63 +3906,6 @@ components:
           example: admin--HackerNewsAPI.graphql
         schemaDefinition:
           type: string
-    GraphQLQueryComplexityInfo:
-      title: GraphQL Query Complexity Info
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/GraphQLCustomComplexityInfo'
-    GraphQLCustomComplexityInfo:
-      title: GraphQL Custom Complexity Info
-      required:
-        - complexityValue
-        - field
-        - type
-      type: object
-      properties:
-        type:
-          type: string
-          description: |
-            The type found within the schema of the API
-          example: Country
-        field:
-          type: string
-          description: |
-            The field which is found under the type within the schema of the API
-          example: name
-        complexityValue:
-          type: integer
-          description: |
-            The complexity value allocated for the associated field under the specified type
-          example: 1
-    GraphQLSchemaTypeList:
-      title: List of types and corresponding fields of the GraphQL Schema
-      type: object
-      properties:
-        typeList:
-          type: array
-          items:
-            $ref: '#/components/schemas/GraphQLSchemaType'
-    GraphQLSchemaType:
-      title: Single type and corresponding fields found within the GraphQL Schema
-      type: object
-      properties:
-        type:
-          type: string
-          description: |
-            Type found within the GraphQL Schema
-          example: Country
-        fieldList:
-          type: array
-          description: |
-            Array of fields under current type
-          example:
-            - code
-            - name
-          items:
-            type: string
     ThrottlingPolicyList:
       title: Throttling policy list
       type: object
@@ -4257,54 +4067,6 @@ components:
             - REJECTED
             - TIER_UPDATE_PENDING
             - DELETE_PENDING
-    ThrottlePolicy:
-      title: Generic Throttling Policy
-      required:
-        - policyName
-      type: object
-      properties:
-        policyId:
-          type: string
-          description: Id of policy
-          readOnly: true
-          example: 0c6439fd-9b16-3c2e-be6e-1086e0b9aa93
-        policyName:
-          maxLength: 60
-          minLength: 1
-          type: string
-          description: Name of policy
-          example: 30PerMin
-        displayName:
-          type: string
-          description: Display name of the policy
-          example: 30PerMin
-          maxLength: 512
-        description:
-          maxLength: 1024
-          type: string
-          description: Description of the policy
-          example: Allows 30 request per minute
-        isDeployed:
-          type: boolean
-          description: Indicates whether the policy is deployed successfully or not.
-          default: false
-        type:
-          type: string
-          description: Indicates the type of throttle policy
-      discriminator:
-        propertyName: type
-    GraphQLQuery:
-      title: GraphQL Query
-      type: object
-      properties:
-        graphQLMaxComplexity:
-          type: integer
-          description: Maximum Complexity of the GraphQL query
-          example: 400
-        graphQLMaxDepth:
-          type: integer
-          description: Maximum Depth of the GraphQL query
-          example: 10
     ThrottleLimitBase:
       title: Throttle Limit Base
       required:
@@ -4344,25 +4106,7 @@ components:
           $ref: '#/components/schemas/BandwidthLimit'
         eventCount:
           $ref: '#/components/schemas/EventCountLimit'
-    MonetizationInfo:
-      title: API monetization details object
-      required:
-        - monetizationPlan
-        - properties
-      type: object
-      properties:
-        monetizationPlan:
-          type: string
-          description: Flag to indicate the monetization plan
-          example: FixedRate
-          enum:
-            - FIXEDRATE
-            - DYNAMICRATE
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          description: Map of custom properties related to each monetization plan
+
     BandwidthLimit:
       title: Bandwidth Limit object
       allOf:
@@ -4641,19 +4385,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdditionalProperty'
-    EnvironmentList:
-      title: Environment List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Environments returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Environment'
     AdditionalProperty:
       title: Additional Gateway Properties
       type: object
@@ -4733,7 +4464,6 @@ components:
         technicalOwnerEmail:
           type: string
           example: technicalowner@wso2.com
-
     WebsubSubscriptionConfiguration:
       type: object
       properties:
@@ -4774,95 +4504,6 @@ components:
             type: string
       description: |
         CORS configuration for the API
-    Endpoint:
-      title: Endpoints
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            UUID of the Endpoint entry
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          description: |
-            name of the Endpoint entry
-          example: Endpoint 1
-        endpointConfig:
-          type: object
-          properties:
-            endpointType:
-              type: string
-              example: FAIL_OVER
-              enum:
-                - SINGLE
-                - LOAD_BALANCED
-                - FAIL_OVER
-            list:
-              type: array
-              items:
-                $ref: '#/components/schemas/EndpointConfig'
-        endpointSecurity:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              example: false
-            type:
-              type: string
-              example: basic
-            username:
-              type: string
-              example: basic
-            password:
-              type: string
-              example: basic
-        maxTps:
-          type: integer
-          description: Endpoint max tps
-          format: int64
-          example: 1000
-        type:
-          type: string
-          example: http
-    EndpointConfig:
-      title: Endpoint Configuration
-      type: object
-      properties:
-        url:
-          type: string
-          description: |
-            Service url of the endpoint
-          example: http://localhost:8280
-        timeout:
-          type: string
-          description: |
-            Time out of the endpoint
-          example: "1000"
-        attributes:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Suspension time
-              value:
-                type: string
-                example: 2s
-    EndpointList:
-      title: Endpoint List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Endpoints returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Endpoint'
     Scope:
       title: Scope
       required:
@@ -4910,67 +4551,6 @@ components:
             usage count of Scope
           readOnly: true
           example: 3
-    SharedScopeUsage:
-      title: SharedScopeUsage
-      required:
-        - id
-        - name
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            UUID of the Scope. Valid only for shared scopes.
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          description: |
-            name of Scope
-          example: apim:api_view
-        usedApiList:
-          type: array
-          description: |
-            API list which have used the shared scope
-          items:
-            $ref: '#/components/schemas/SharedScopeUsedAPIInfo'
-    SharedScopeUsedAPIInfo:
-      title: API object using shared scope
-      required:
-        - context
-        - name
-        - version
-      type: object
-      properties:
-        name:
-          type: string
-          example: CalculatorAPI
-        context:
-          type: string
-          example: CalculatorAPI
-        version:
-          type: string
-          example: 1.0.0
-        provider:
-          type: string
-          description: |
-            If the provider value is not given user invoking the api will be used as the provider.
-          example: admin
-        usedResourceList:
-          type: array
-          description: |
-            Resource list which have used the shared scope within this API
-          items:
-            $ref: '#/components/schemas/SharedScopeUsedAPIResourceInfo'
-    SharedScopeUsedAPIResourceInfo:
-      title: API resource object using shared scope
-      type: object
-      properties:
-        target:
-          type: string
-          example: /add
-        verb:
-          type: string
-          example: POST
     APIScope:
       title: APIScope
       required:
@@ -5028,21 +4608,6 @@ components:
           example: ""
         operationPolicies:
           $ref: '#/components/schemas/APIOperationPolicies'
-    ScopeList:
-      title: Scope List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Scopes returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Scope'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     ExternalStore:
       title: External Store
       type: object
@@ -5094,97 +4659,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/APIExternalStore'
-    ExternalStoreList:
-      title: External Store List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of external stores returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalStore'
-    Certificates:
-      title: Certificates
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 1
-        certificates:
-          type: array
-          items:
-            $ref: '#/components/schemas/CertMetadata'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Representation of a list of certificates
-    CertMetadata:
-      title: Certificate
-      type: object
-      properties:
-        alias:
-          type: string
-          example: wso2carbon
-        endpoint:
-          type: string
-          example: www.abc.com
-      description: Representation of the details of a certificate
-    CertificateInfo:
-      title: Certificate information
-      type: object
-      properties:
-        status:
-          type: string
-          example: Active
-        validity:
-          $ref: '#/components/schemas/CertificateValidity'
-        version:
-          type: string
-          example: V3
-        subject:
-          type: string
-          example: CN=wso2.com, OU=wso2, O=wso2, L=Colombo, ST=Western, C=LK
-    CertificateValidity:
-      title: Certificate Valid period
-      type: object
-      properties:
-        from:
-          type: string
-          example: 12-12-2017
-        to:
-          type: string
-          example: 01-01-2019
-    ClientCertificates:
-      title: Client Certificates
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 1
-        certificates:
-          type: array
-          items:
-            $ref: '#/components/schemas/ClientCertMetadata'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-      description: Representation of a list of client certificates
-    ClientCertMetadata:
-      title: Client certificate meta data
-      type: object
-      properties:
-        alias:
-          type: string
-          example: wso2carbon
-        apiId:
-          type: string
-          example: 64eca60b-2e55-4c38-8603-e9e6bad7d809
-        tier:
-          type: string
-          example: Gold
-      description: Meta data of certificate
     LifecycleState:
       title: Lifecycle State
       type: object
@@ -5270,153 +4744,6 @@ components:
           example: null
         lifecycleState:
           $ref: '#/components/schemas/LifecycleState'
-    OpenAPIDefinitionValidationResponse:
-      title: OpenAPI Definition Validation Response
-      required:
-        - isValid
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          description: |
-            This attribute declares whether this definition is valid or not.
-          example: true
-        content:
-          type: string
-          description: |
-            OpenAPI definition content.
-        info:
-          type: object
-          properties:
-            name:
-              type: string
-              example: PetStore
-            version:
-              type: string
-              example: 1.0.0
-            context:
-              type: string
-              example: /petstore
-            description:
-              type: string
-              example: A sample API that uses a petstore as an example to demonstrate
-                swagger-2.0 specification
-            openAPIVersion:
-              type: string
-              example: 3.0.0
-            endpoints:
-              type: array
-              description: |
-                contains host/servers specified in the OpenAPI file/URL
-              items:
-                type: string
-                example: https://localhost:9443/am/sample/pizzashack/v3/api/
-          description: |
-            API definition information
-        errors:
-          type: array
-          description: |
-            If there are more than one error list them out.
-            For example, list out validation errors by each field.
-          items:
-            $ref: '#/components/schemas/ErrorListItem'
-    WSDLValidationResponse:
-      title: WSDL Definition Validation Response
-      required:
-        - isValid
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          description: |
-            This attribute declares whether this definition is valid or not.
-          example: true
-        errors:
-          type: array
-          description: |
-            If there are more than one error list them out.
-            For example, list out validation errors by each field.
-          items:
-            $ref: '#/components/schemas/ErrorListItem'
-        wsdlInfo:
-          type: object
-          properties:
-            version:
-              type: string
-              description: |
-                WSDL version
-              example: "1.1"
-            endpoints:
-              type: array
-              description: |
-                A list of endpoints the service exposes
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: Name of the endpoint
-                    example: StockQuoteSoap
-                  location:
-                    type: string
-                    description: Endpoint URL
-                    example: http://www.webservicex.net/stockquote.asmx
-          description: Summary of the WSDL including the basic information
-    GraphQLValidationResponse:
-      title: GraphQL API definition validation Response
-      required:
-        - errorMessage
-        - isValid
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          description: |
-            This attribute declares whether this definition is valid or not.
-          example: true
-        errorMessage:
-          type: string
-          description: |
-            This attribute declares the validation error message
-        graphQLInfo:
-          type: object
-          properties:
-            operations:
-              type: array
-              items:
-                $ref: '#/components/schemas/APIOperations'
-            graphQLSchema:
-              $ref: '#/components/schemas/GraphQLSchema'
-          description: Summary of the GraphQL including the basic information
-    ApiEndpointValidationResponse:
-      title: API Endpoint url validation response
-      required:
-        - statusCode
-        - statusMessage
-      type: object
-      properties:
-        statusCode:
-          type: integer
-          description: HTTP status code
-          example: 200
-        statusMessage:
-          type: string
-          description: string
-          example: OK
-        error:
-          type: string
-          description: |
-            If an error occurs, the error message will be set to this property.
-            If not, this will remain null.
-          example: null
-    ThreatProtectionPolicyList:
-      title: Threat Protection Policy List
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/ThreatProtectionPolicy'
     ThreatProtectionPolicy:
       title: Threat Protection Policy Schema
       required:
@@ -5452,98 +4779,6 @@ components:
             type: object
         pagination:
           $ref: '#/components/schemas/Pagination'
-    SearchResult:
-      title: Search Result
-      required:
-        - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          example: TestAPI
-        type:
-          type: string
-          example: API
-          enum:
-            - DOC
-            - API
-            - APIProduct
-        transportType:
-          type: string
-          description: Accepted values are HTTP, WS, SOAPTOREST, GRAPHQL
-      discriminator:
-        propertyName: name
-    APISearchResult:
-      title: API Result
-      allOf:
-        - $ref: '#/components/schemas/SearchResult'
-        - type: object
-          properties:
-            description:
-              type: string
-              description: A brief description about the API
-              example: A calculator API that supports basic operations
-            context:
-              type: string
-              description: A string that represents the context of the user's request
-              example: CalculatorAPI
-            contextTemplate:
-              type: string
-              description: The templated context of the API
-              example: CalculatorAPI/{version}
-            version:
-              type: string
-              description: The version of the API
-              example: 1.0.0
-            provider:
-              type: string
-              description: |
-                If the provider value is not given, the user invoking the API will be used as the provider.
-              example: admin
-            status:
-              type: string
-              description: This describes in which status of the lifecycle the API is
-              example: CREATED
-            thumbnailUri:
-              type: string
-              example: /apis/01234567-0123-0123-0123-012345678901/thumbnail
-            advertiseOnly:
-              type: boolean
-              example: true
-    APIProductSearchResult:
-      title: API Result
-      allOf:
-        - $ref: '#/components/schemas/SearchResult'
-        - type: object
-          properties:
-            description:
-              type: string
-              description: A brief description about the API
-              example: A calculator API that supports basic operations
-            context:
-              type: string
-              description: A string that represents the context of the user's request
-              example: CalculatorAPI
-            version:
-              type: string
-              description: The version of the API Product
-              example: 1.0.0
-            provider:
-              type: string
-              description: |
-                If the provider value is not given, the user invoking the API will be used as the provider.
-              example: admin
-            status:
-              type: string
-              description: This describes in which status of the lifecycle the APIPRODUCT
-                is
-              example: PUBLISHED
-            thumbnailUri:
-              type: string
-              example: /apis/01234567-0123-0123-0123-012345678901/thumbnail
     APIMonetizationInfo:
       title: API monetization object
       required:
@@ -5559,144 +4794,6 @@ components:
           additionalProperties:
             type: string
           description: Map of custom properties related to monetization
-    DocumentSearchResult:
-      title: Document Result
-      allOf:
-        - $ref: '#/components/schemas/SearchResult'
-        - type: object
-          properties:
-            docType:
-              type: string
-              example: HOWTO
-              enum:
-                - HOWTO
-                - SAMPLES
-                - PUBLIC_FORUM
-                - SUPPORT_FORUM
-                - API_MESSAGE_FORMAT
-                - SWAGGER_DOC
-                - OTHER
-            summary:
-              type: string
-              example: Summary of Calculator Documentation
-            sourceType:
-              type: string
-              example: INLINE
-              enum:
-                - INLINE
-                - URL
-                - FILE
-                - MARKDOWN
-            sourceUrl:
-              type: string
-              example: ""
-            otherTypeName:
-              type: string
-              example: ""
-            visibility:
-              type: string
-              example: API_LEVEL
-              enum:
-                - OWNER_ONLY
-                - PRIVATE
-                - API_LEVEL
-            apiName:
-              type: string
-              description: The name of the associated API
-              example: TestAPI
-            apiVersion:
-              type: string
-              description: The version of the associated API
-              example: 1.0.0
-            apiProvider:
-              type: string
-              example: admin
-            apiUUID:
-              type: string
-            associatedType:
-              type: string
-    MockResponsePayloadList:
-      title: Mock Response Payload list
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/MockResponsePayloadInfo'
-    MockResponsePayloadInfo:
-      title: Mock Response Payload info object
-      type: object
-      properties:
-        path:
-          type: string
-          description: path of the resource
-          example: /menu
-        content:
-          type: string
-          description: new modified code
-          example: "var accept = \"\\\"\"+mc.getProperty('AcceptHeader')+\"\\\"\"\
-            ;\nvar responseCode = mc.getProperty('query.param.responseCode');\nvar\
-            \ responseCodeStr = \"\\\"\"+responseCode+\"\\\"\";\nvar responses = [];\n\
-            \nif (!responses[200]) {\n responses [200] = [];\n}\nresponses[200][\"\
-            application/json\"] = \n[ {\n  \"price\" : \"string\",\n  \"description\"\
-            \ : \"string\",\n  \"name\" : \"string\",\n  \"image\" : \"string\"\n\
-            } ]\n\n/*if (!responses[304]) {\n  responses[304] = [];\n}\nresponses[304][\"\
-            application/(json or xml)\"] = {}/<>*/\n\nif (!responses[406]) {\n responses\
-            \ [406] = [];\n}\nresponses[406][\"application/json\"] = \n{\n  \"message\"\
-            \ : \"string\",\n  \"error\" : [ {\n    \"message\" : \"string\",\n  \
-            \  \"code\" : 0\n  } ],\n  \"description\" : \"string\",\n  \"code\" :\
-            \ 0,\n  \"moreInfo\" : \"string\"\n}\n\nresponses[501] = [];\nresponses[501][\"\
-            application/json\"] = {\n\"code\" : 501,\n\"description\" : \"Not Implemented\"\
-            }\nresponses[501][\"application/xml\"] = <response><code>501</code><description>Not\
-            \ Implemented</description></response>;\n\nif (!responses[responseCode])\
-            \ {\n responseCode = 501;\n}\n\nif (responseCode == null) {\n responseCode\
-            \ = 200;\n responseCodeStr = \"200\";\n}\n\nif (accept == null || !responses[responseCode][accept])\
-            \ {\n accept = \"application/json\";\n}\n\nif (accept === \"application/json\"\
-            ) {\n mc.setProperty('CONTENT_TYPE', 'application/json');\n mc.setProperty('HTTP_SC',\
-            \ responseCodeStr);\n mc.setPayloadJSON(responses[responseCode][\"application/json\"\
-            ]);\n} else if (accept === \"application/xml\") {\n mc.setProperty('CONTENT_TYPE',\
-            \ 'application/xml');\n mc.setProperty('HTTP_SC', responseCodeStr);\n\
-            \ mc.setPayloadXML(responses[responseCode][\"application/xml\"]);\n}"
-        verb:
-          type: string
-          example: POST
-    ResourcePolicyList:
-      title: Resource policy List
-      type: object
-      properties:
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourcePolicyInfo'
-        count:
-          type: integer
-          description: |
-            Number of policy resources returned.
-          example: 1
-    ResourcePolicyInfo:
-      title: Resource policy Info object with conversion policy resource details.
-      type: object
-      properties:
-        id:
-          type: string
-          description: |
-            UUID of the resource policy registry artifact
-          readOnly: true
-          example: 01234567-0123-0123-0123-012345678901
-        httpVerb:
-          type: string
-          description: HTTP verb used for the resource path
-          example: get
-        resourcePath:
-          type: string
-          description: A string that represents the resource path of the api for the
-            related resource policy
-          example: checkPhoneNumber
-        content:
-          type: string
-          description: The resource policy content
-          example: <header description="SOAPAction" name="SOAPAction" scope="transport"
-            value="http://ws.cdyne.com/PhoneVerify/query/CheckPhoneNumber"/>
     Settings:
       title: SettingsDTO
       type: object
@@ -5745,24 +4842,7 @@ components:
           type: string
           description: Authorization Header
           example: authorization
-    SecurityAuditAttribute:
-      title: SecurityAuditAttributeDTO
-      type: object
-      properties:
-        isGlobal:
-          type: boolean
-          example: false
-        overrideGlobal:
-          type: boolean
-          example: false
-        apiToken:
-          type: string
-          example: b1267ytf-b7gc-4aee-924d-ece81241efec
-        collectionId:
-          type: string
-          example: 456ef957-5a79-449f-83y3-9027945d3c60
-        baseUrl:
-          type: string
+
     WSDLInfo:
       title: WSDL information of the API. This is only available if the API is a SOAP
         API.
@@ -5827,33 +4907,6 @@ components:
           type: string
           description: |
             Default value of the attribute
-    Tenant:
-      title: Tenant
-      type: object
-      properties:
-        domain:
-          type: string
-          description: tenant domain
-          example: wso2.com
-        status:
-          type: string
-          description: current status of the tenant active/inactive
-          example: active
-    TenantList:
-      title: Tenant list
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of tenants returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tenant'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     AdvertiseInfo:
       title: API Advertise info object with advertise details
       type: object
@@ -5907,132 +4960,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/APICategory'
-    KeyManagerInfo:
-      title: Key Manager Info
-      required:
-        - name
-        - type
-      type: object
-      properties:
-        id:
-          type: string
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          example: WSO2 IS
-        displayName:
-          type: string
-          description: |
-            display name of Keymanager
-          example: Keymanager1
-        type:
-          type: string
-          example: IS
-        description:
-          type: string
-          example: This is a key manager for Developers
-        enabled:
-          type: boolean
-          example: true
-        additionalProperties:
-          type: array
-          items:
-            type: object
-            properties: {}
-    KeyManagerList:
-      title: Key Manager List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Key managers returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/KeyManagerInfo'
-    APIKey:
-      title: API Key details to invoke APIs
-      type: object
-      properties:
-        apikey:
-          type: string
-          description: API Key
-          example: eyJoZWxsbyI6IndvcmxkIn0=.eyJ3c28yIjoiYXBpbSJ9.eyJ3c28yIjoic2lnbmF0dXJlIn0=
-        validityTime:
-          type: integer
-          format: int32
-          example: 3600
-    EnvironmentProperties:
-      title: Envionment specific API properties request body
-      type: object
-      additionalProperties:
-        type: string
-      example:
-        productionEndpoint: https://localhost:9443/pizzashack/v3/api/
-        sandboxEndpoint: https://localhost:9443/pizzashack/v3/api/
-    AsyncAPISpecificationValidationResponse:
-      title: AsyncAPI Specification Validation Response
-      required:
-        - isValid
-      type: object
-      properties:
-        isValid:
-          type: boolean
-          description:
-            This attribute declares whether this definition is valid or not.
-          example: true
-        content:
-          type: string
-          description:
-            AsyncAPI specification content
-        info:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Streetlights
-            version:
-              type: string
-              example: 1.0.0
-            context:
-              type: string
-              example: /streetlights
-            description:
-              type: string
-              example: A sample API that uses a streetlights as an example to demonstrate AsyncAPI specifications
-            asyncAPIVersion:
-              type: string
-              example: 2.0
-            protocol:
-              type: string
-              example: WEBSUB
-            endpoints:
-              type: array
-              description:
-                contains host/servers specified in the AsyncAPI file/URL
-              items:
-                type: string
-                example: "https://localhost:9443/am/sample/pizzashack/v3/api/"
-            gatewayVendor:
-              type: string
-              example: wso2
-            asyncTransportProtocols:
-              type: array
-              description: contains available transports for an async API
-              items:
-                type: string
-                example: http
-          description:
-            API definition information
-        errors:
-          type: array
-          description:
-            If there are more than one error list them out.
-            For example, list out validation error by each field.
-          items:
-            $ref: '#/components/schemas/ErrorListItem'
     OperationPolicy:
       title: API Operation Policy
       type: object
@@ -6078,107 +5005,6 @@ components:
         endpointURI:
           type: string
           example: default
-    OperationPolicyDataList:
-      title: Operation policy List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of operation policies returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/OperationPolicyData'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    OperationPolicyData:
-      title: Operation Policy Data
-      type: object
-      properties:
-        category:
-          type: string
-          example: Mediation
-        id:
-          type: string
-          example: 121223q41-24141-124124124-12414
-        name:
-          type: string
-          example: removeHeaderPolicy
-        version:
-          type: string
-          example: v1
-          default: v1
-        displayName:
-          type: string
-          example: Remove Header Policy
-        description:
-          type: string
-          example: With this policy, user can add a new header to the request
-        applicableFlows:
-          type: array
-          items:
-            type: string
-            example: in
-        supportedGateways:
-          type: array
-          items:
-            type: string
-            example: Synapse
-        supportedApiTypes:
-          type: array
-          items:
-            type: string
-            example: REST
-        isAPISpecific:
-          type: boolean
-          example: true
-        md5:
-          type: string
-          example: 121223q41-24141-124124124-12414
-        policyAttributes:
-          type: array
-          items:
-            $ref: '#/components/schemas/OperationPolicySpecAttribute'
-    OperationPolicySpecAttribute:
-      title: OperationPolicySpecAttribute
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the attibute
-          example: headerName
-        displayName:
-          type: string
-          description: Display name of the attibute
-          example: Header Name
-        description:
-          type: string
-          description: Description of the attibute
-          example: Name of the header to be removed
-        validationRegex:
-          type: string
-          description: UI validation regex for the attibute
-          example: /^[a-z\s]{0,255}$/i
-        type:
-          type: string
-          description: Type of the attibute
-          example: string
-        required:
-          type: boolean
-          description: Is this attibute mandetory for the policy
-          example: true
-        defaultValue:
-          type: string
-          description: Default value for the attribute
-          example: true
-        allowedValues:
-          type: array
-          description: If the attribute type is enum, this array should contain all the possible values for the enum.
-          items:
-            type: string
-            example: ["GET","POST","PUT"]
   responses:
     BadRequest:
       description: Bad Request. Invalid request or validation error.
