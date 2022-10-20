@@ -14,12 +14,12 @@
 ################################################################################
 openapi: 3.0.1
 info:
-  title: WSO2 API Manager - Publisher API
+  title: WSO2 APK - BackOffice API
   description: |
-    This document specifies a **RESTful API** for WSO2 **API Manager** - **Publisher**.
+    This document specifies a **RESTful API** for WSO2 **APK** - **BackOffice**.
 
     # Authentication
-    The Publisher REST API is protected using OAuth2 and access control is achieved through scopes. Before you start invoking
+    The BackOffice REST API is protected using OAuth2 and access control is achieved through scopes. Before you start invoking
     the the API you need to obtain an access token with the required scopes. This guide will walk you through the steps
     that you will need to follow to obtain an access token.
     First you need to obtain the consumer key/secret key pair by calling the dynamic client registration (DCR) endpoint. You can add your preferred grant types
@@ -103,9 +103,9 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: v3
+  version: v1
 servers:
-  - url: https://apis.wso2.com/api/am/publisher/v3
+  - url: https://apis.wso2.com/api/am/backoffice/v1
 security:
   - OAuth2Security:
       - apim:api_view
@@ -113,14 +113,14 @@ paths:
   ######################################################
   # The "API Collection" resource APIs
   ######################################################
-  /apis:
+  /runtime-apis:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: |
-        Retrieve/Search APIs
+        Retrieve/Search Runtime APIs
       description: |
-        This operation provides you a list of available APIs qualifying under a given search condition.
+        This operation provides you a list of available Runtime APIs qualifying under a given search condition.
 
         Each retrieved API is represented with a minimal amount of attributes. If you want to get complete details of an API, you need to use **Get details of an API** operation.
       parameters:
@@ -161,7 +161,7 @@ paths:
         200:
           description: |
             OK.
-            List of qualifying APIs is returned.
+            List of qualifying Runtime APIs is returned.
           headers:
             ETag:
               description: |
@@ -186,22 +186,20 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_manage
-            - apim:api_import_export
             - apim:api_list_view
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis"'
       operationId: getAllAPIs
 
   ######################################################
-  # The "Individual API" resource APIs
+  # The "Individual API" resource Runtime APIs
   ######################################################
-  /apis/{apiId}:
+  /runtime-apis/{apiId}:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get Details of an API
       description: |
         Using this operation, you can retrieve complete details of a single API. You need to provide the Id of the API to retrive it.
@@ -247,19 +245,17 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_manage
-            - apim:api_import_export
             - apim:api_product_import_export
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/7a2298c4-c905-403f-8fac-38c73301631f"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f"'
       operationId: getAPI
 
-  /apis/{apiId}/swagger:
+  /runtime-apis/{apiId}/swagger:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get Swagger Definition
       description: |
         This operation can be used to retrieve the swagger definition of an API.
@@ -305,25 +301,24 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_manage
             - apim:api_definition_view
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/7a2298c4-c905-403f-8fac-38c73301631f/swagger"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f/swagger"'
       operationId: getAPISwagger
 
   ######################################################
-  # The "API Revisions" resource API
+  # The "Runtime API Revisions" resource API
   ######################################################
-  /apis/{apiId}/revisions:
+  /runtime-apis/{apiId}/revisions:
 
     #--------------------------------------------
     # List available revisions of an API
     #--------------------------------------------
     get:
       tags:
-        - API Revisions
+        - Runtime API Revisions
       summary: List Revisions
       description: |
         List available revisions of an API
@@ -338,7 +333,7 @@ paths:
         200:
           description: |
             OK.
-            List of API revisions are returned.
+            List of Runtime API Revisions are returned.
           content:
             application/json:
               schema:
@@ -348,26 +343,22 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_create
-            - apim:api_manage
-            - apim:api_publish
-            - apim:api_import_export
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions?query=deployed:true"'
+            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions?query=deployed:true"'
 
   ######################################################
-  # The "API Revisions" individual resource API
+  # The "Runtime API Revisions" individual resource API
   ######################################################
-  /apis/{apiId}/revisions/{revisionId}:
+  /runtime-apis/{apiId}/revisions/{revisionId}:
 
     #--------------------------------------------
     # Get a revision
     #--------------------------------------------
     get:
       tags:
-        - API Revisions
+        - Runtime API Revisions
       summary: Retrieve Revision
       description: |
         Retrieve a revision of an API (This resource is not supported in the current release)
@@ -389,21 +380,18 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_create
-            - apim:api_manage
-            - apim:api_publish
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions/e0824883-3e86-403a-aec1-22bbc454eb7c"'
+            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions/e0824883-3e86-403a-aec1-22bbc454eb7c"'
 
-  /apis/{apiId}/deployments:
+  /runtime-apis/{apiId}/deployments:
     #--------------------------------------------
     # List available deployed revision deployment details of an API
     #--------------------------------------------
     get:
       tags:
-        - API Revisions
+        - Runtime API Revisions
       summary: List Deployments
       description: |
         List available deployed revision deployment details of an API
@@ -424,18 +412,15 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:api_create
-            - apim:api_manage
-            - apim:api_publish
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-                "https://127.0.0.1:9443/api/am/publisher/v3/apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/deployments"'
+                "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/deployments"'
 
   /api-products/{apiProductId}/monetize:
     post:
       tags:
-        - API Monetization
+        - API Product Monetization
       summary: Configure Monetization for a Given API
       description: |
         This operation can be used to configure monetization for a given API.
@@ -446,7 +431,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/APIMonetizationInfo'
+              $ref: '#/components/schemas/APIProductMonetizationInfo'
         required: true
       responses:
         201:
@@ -467,13 +452,13 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/monetize'
+          -H "Content-Type: application/json" -d @data.json https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/monetize'
       operationId: addAPIMonetization
 
   /api-products/{apiProductId}/monetization:
     get:
       tags:
-        - API Monetization
+        - API Product Monetization
       summary: Get Monetization Status for each Tier in a Given API
       description: |
         This operation can be used to get monetization status for each tier in a given API
@@ -499,13 +484,13 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/monetization"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/monetization"'
       operationId: getAPIMonetization
 
   /api-products/{apiProductId}/revenue:
     get:
       tags:
-        - API Monetization
+        - API Product Monetization
       summary: Get Total Revenue Details of a Given Monetized API with Meterd Billing
       description: |
         This operation can be used to get details of total revenue details of a given monetized API with meterd billing.
@@ -550,13 +535,13 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/revenue"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/revenue"'
       operationId: getAPIRevenue
 
-  /apis/{apiId}/wsdl-info:
+  /runtime-apis/{apiId}/wsdl-info:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get WSDL Meta Information
       description: |
         This operation can be used to retrieve the WSDL meta information of an API. It states whether the API is a SOAP
@@ -584,12 +569,12 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl-info"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl-info"'
 
-  /apis/{apiId}/wsdl:
+  /runtime-apis/{apiId}/wsdl:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get WSDL definition
       description: |
         This operation can be used to retrieve the WSDL definition of an API. It can be either a single WSDL file or a WSDL archive.
@@ -633,12 +618,12 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl"'
 
-  /apis/{apiId}/resource-paths:
+  /runtime-apis/{apiId}/resource-paths:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get Resource Paths of an API
       description: |
         This operation can be used to retrieve resource paths defined for a specific API.
@@ -690,7 +675,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/resource-paths"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/resource-paths"'
       operationId: getAPIResourcePaths
 
   /api-products/{apiProductId}/external-stores:
@@ -735,7 +720,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/external-stores"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/external-stores"'
 
   /api-products/{apiProductId}/publish-to-external-stores:
     post:
@@ -787,7 +772,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/96077508-fd01-4fae-bc64-5de0e2baf43c/publish-to-external-stores?externalStoreId=Store123#"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/publish-to-external-stores?externalStoreId=Store123#"'
 
   ######################################################
   # The "Subscription Collection" resource APIs
@@ -861,7 +846,7 @@ paths:
   /subscriptions/{subscriptionId}/usage:
     get:
       tags:
-        - API Monetization
+        - API Product Monetization
       summary: Get Details of a Pending Invoice for a Monetized Subscription with Metered Billing.
       description: |
         This operation can be used to get details of a pending invoice for a monetized subscription with meterd billing.
@@ -2250,10 +2235,10 @@ paths:
             -F file=@admin-PizzaShackAPIProduct.zip "https://127.0.0.1:9443/api/am/publisher/v3/api-products/import?preserveProvider=false&overwriteAPIProduct=false&overwriteAPIs=false&importAPIs=false"'
       operationId: importAPIProduct
 
-  /apis/{apiId}/graphql-schema:
+  /runtime-apis/{apiId}/graphql-schema:
     get:
       tags:
-        - GraphQL Schema (Individual)
+        - Runtime APIs
       summary: Get the Schema of a GraphQL API
       description: |
         This operation can be used to retrieve the Schema definition of a GraphQL API.
@@ -2303,7 +2288,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/apis/e0824883-3e86-403a-aec1-22bbc454eb7c/graphql-schema"'
+          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/e0824883-3e86-403a-aec1-22bbc454eb7c/graphql-schema"'
       operationId: getAPIGraphQLSchema
 
   ######################################################
@@ -2338,15 +2323,15 @@ paths:
           "https://127.0.0.1:9443/api/am/publisher/v3/external-stores"'
 
   ######################################################
-  # The Publisher settings resource APIs
+  # The BackOffice settings resource APIs
   ######################################################
   /settings:
     get:
       tags:
         - Settings
-      summary: Retreive Publisher Settings
+      summary: Retreive BackOffice Settings
       description: |
-        Retreive publisher settings
+        Retreive BackOffice settings
       responses:
         200:
           description: |
@@ -2361,11 +2346,11 @@ paths:
       security:
         - OAuth2Security:
             - apim:api_view
-            - apim:publisher_settings
+            - apim:backoffice_settings
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/settings"'
+          "https://127.0.0.1:9443/api/am/backoffice/v3/settings"'
       operationId: getSettings
 
   ######################################################
@@ -2397,10 +2382,10 @@ paths:
           "https://127.0.0.1:9443/api/am/publisher/v3/api-categories"'
       operationId: getAllAPICategories
 
-  /apis/{apiId}/asyncapi:
+  /runtime-apis/{apiId}/asyncapi:
     get:
       tags:
-        - APIs
+        - Runtime APIs
       summary: Get AsyncAPI definition
       description: |
         This operation can be used to retrieve the AsyncAPI definition of an API.
@@ -2452,7 +2437,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/apis/01234567-0123-0123-0123-012345678901/asyncapi"'
+            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/01234567-0123-0123-0123-012345678901/asyncapi"'
 
   /api-products/change-lifecycle:
     post:
@@ -3050,7 +3035,7 @@ components:
             - apim:api_publish
             - apim:api_manage
         monetization:
-          $ref: '#/components/schemas/APIMonetizationInfo'
+          $ref: '#/components/schemas/APIProductMonetizationInfo'
         accessControl:
           type: string
           description: |
@@ -3325,12 +3310,12 @@ components:
     # The API Revision List resource
     #-----------------------------------------------------
     APIRevisionList:
-      title: API Revisions List
+      title: Runtime API Revisions List
       properties:
         count:
           type: integer
           description: |
-            Number of API revisions returned
+            Number of Runtime API Revisions returned
           example: 1
         list:
           type: array
@@ -3647,7 +3632,7 @@ components:
                 type: boolean
                 default: false
         monetization:
-          $ref: '#/components/schemas/APIMonetizationInfo'
+          $ref: '#/components/schemas/APIProductMonetizationInfo'
         businessInformation:
           $ref: '#/components/schemas/APIProductBusinessInformation'
         corsConfiguration:
@@ -4779,8 +4764,8 @@ components:
             type: object
         pagination:
           $ref: '#/components/schemas/Pagination'
-    APIMonetizationInfo:
-      title: API monetization object
+    APIProductMonetizationInfo:
+      title: API Product monetization object
       required:
         - enabled
       type: object
@@ -5575,7 +5560,7 @@ components:
             apim:ep_certificates_add: Add backend endpoint certificates
             apim:ep_certificates_update: Update and delete backend endpoint certificates
             apim:ep_certificates_manage: View, create, update and remove endpoint certificates
-            apim:publisher_settings: Retrieve store settings
+            apim:backoffice_settings: Retrieve BackOffice settings
             apim:pub_alert_manage: Get/ subscribe/ configure publisher alerts
             apim:shared_scope_manage: Manage shared scopes
             apim:app_import_export: Import and export applications related operations
