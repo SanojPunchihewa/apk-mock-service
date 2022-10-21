@@ -110,6 +110,83 @@ security:
   - OAuth2Security:
       - apim:api_view
 paths:
+  /runtimes:
+    get:
+      tags:
+        - Runtimes
+      summary: |
+        Retrieve/Search Runtimes
+      description: |
+        This operation provides you a list of available Runtimes qualifying under a given search condition.
+
+        Each retrieved Runtime is represented with a minimal amount of attributes. If you want to get complete details of an Runtime, you need to use **Get details of a Runtime** operation.
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/Accept'
+      responses:
+        200:
+          description: |
+            OK.
+            List of Runtimes is returned.
+          headers:
+            Content-Type:
+              description: The content type of the body.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuntimeList'
+        406:
+          $ref: '#/components/responses/NotAcceptable'
+      security:
+        - OAuth2Security:
+            - apim:api_view
+            - apim:api_list_view
+      x-code-samples:
+        - lang: Curl
+          source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtimes"'
+      operationId: getAllRuntimes
+
+  /runtimes/{runtimeId}:
+    get:
+      tags:
+        - Runtimes
+      summary: |
+        Get details of a Runtime
+      description: |
+        Using this operation, you can retrieve complete details of a single Runtime. You need to provide the Id of the Runtime to retrive it.
+      parameters:
+        - $ref: '#/components/parameters/runtimeId'
+        - $ref: '#/components/parameters/If-None-Match'
+      responses:
+        200:
+          description: |
+            OK.
+            Requested Runtime is returned
+          headers:
+            Content-Type:
+              description: The content type of the body.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Runtime'
+        406:
+          $ref: '#/components/responses/NotAcceptable'
+      security:
+        - OAuth2Security:
+            - apim:api_view
+            - apim:api_list_view
+      x-code-samples:
+        - lang: Curl
+          source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime/7a2298c4-c905-403f-8fac-38c73301631f"'
+      operationId: getRuntime
+
   ######################################################
   # The "API Collection" resource APIs
   ######################################################
@@ -190,7 +267,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis"'
       operationId: getAllAPIs
 
   ######################################################
@@ -249,7 +326,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f"'
       operationId: getAPI
 
   /runtime-apis/{apiId}/swagger:
@@ -305,7 +382,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f/swagger"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/7a2298c4-c905-403f-8fac-38c73301631f/swagger"'
       operationId: getAPISwagger
 
   ######################################################
@@ -346,7 +423,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions?query=deployed:true"'
+            "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions?query=deployed:true"'
 
   ######################################################
   # The "Runtime API Revisions" individual resource API
@@ -383,7 +460,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions/e0824883-3e86-403a-aec1-22bbc454eb7c"'
+            "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/revisions/e0824883-3e86-403a-aec1-22bbc454eb7c"'
 
   /runtime-apis/{apiId}/deployments:
     #--------------------------------------------
@@ -415,9 +492,9 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-                "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/deployments"'
+                "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/deployments"'
 
-  /api-products/{apiProductId}/monetize:
+  /backoffice-apis/{backofficeApiId}/monetize:
     post:
       tags:
         - API Product Monetization
@@ -425,7 +502,7 @@ paths:
       description: |
         This operation can be used to configure monetization for a given API.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
       requestBody:
         description: Monetization data object
         content:
@@ -452,10 +529,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/monetize'
+          -H "Content-Type: application/json" -d @data.json https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/monetize'
       operationId: addAPIMonetization
 
-  /api-products/{apiProductId}/monetization:
+  /backoffice-apis/{backofficeApiId}/monetization:
     get:
       tags:
         - API Product Monetization
@@ -463,7 +540,7 @@ paths:
       description: |
         This operation can be used to get monetization status for each tier in a given API
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
       responses:
         200:
           description: |
@@ -484,10 +561,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/monetization"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/monetization"'
       operationId: getAPIMonetization
 
-  /api-products/{apiProductId}/revenue:
+  /backoffice-apis/{backofficeApiId}/revenue:
     get:
       tags:
         - API Product Monetization
@@ -495,7 +572,7 @@ paths:
       description: |
         This operation can be used to get details of total revenue details of a given monetized API with meterd billing.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
       responses:
         200:
           description: |
@@ -535,7 +612,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/revenue"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/revenue"'
       operationId: getAPIRevenue
 
   /runtime-apis/{apiId}/wsdl-info:
@@ -569,7 +646,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl-info"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl-info"'
 
   /runtime-apis/{apiId}/wsdl:
     get:
@@ -618,7 +695,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/wsdl"'
 
   /runtime-apis/{apiId}/resource-paths:
     get:
@@ -675,10 +752,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/resource-paths"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/resource-paths"'
       operationId: getAPIResourcePaths
 
-  /api-products/{apiProductId}/external-stores:
+  /backoffice-apis/{backofficeApiId}/external-stores:
     get:
       tags:
         - External Stores
@@ -687,7 +764,7 @@ paths:
         This operation can be used to retrieve a list of external stores which an API is published to by providing the ID of the API.
       operationId: getAllPublishedExternalStoresByAPI
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
         200:
@@ -720,9 +797,9 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/external-stores"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/external-stores"'
 
-  /api-products/{apiProductId}/publish-to-external-stores:
+  /backoffice-apis/{backofficeApiId}/publish-to-external-stores:
     post:
       tags:
         - External Stores
@@ -731,7 +808,7 @@ paths:
         This operation can be used to publish an API to a list of external stores.
       operationId: publishAPIToExternalStores
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - name: externalStoreIds
           in: query
           description: External Store Ids of stores which the API needs to be published
@@ -772,7 +849,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/96077508-fd01-4fae-bc64-5de0e2baf43c/publish-to-external-stores?externalStoreId=Store123#"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/96077508-fd01-4fae-bc64-5de0e2baf43c/publish-to-external-stores?externalStoreId=Store123#"'
 
   ######################################################
   # The "Subscription Collection" resource APIs
@@ -786,10 +863,10 @@ paths:
         This operation can be used to retrieve a list of subscriptions of the user associated with the provided access token. This operation is capable of
 
         1. Retrieving all subscriptions for the user's APIs.
-        `GET https://127.0.0.1:9443/api/am/publisher/v3/subscriptions`
+        `GET https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions`
 
         2. Retrieving subscriptions for a specific API.
-        `GET https://127.0.0.1:9443/api/am/publisher/v3/subscriptions?apiId=c43a325c-260b-4302-81cb-768eafaa3aed`
+        `GET https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions?apiId=c43a325c-260b-4302-81cb-768eafaa3aed`
       parameters:
         - $ref: '#/components/parameters/apiId-Q-Opt'
         - $ref: '#/components/parameters/limit'
@@ -837,7 +914,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/subscriptions?apiId=96077508-fd01-4fae-bc64-5de0e2baf43c"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions?apiId=96077508-fd01-4fae-bc64-5de0e2baf43c"'
       operationId: getSubscriptions
 
   ######################################################
@@ -897,7 +974,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/subscriptions/64eca60b-2e55-4c38-8603-e9e6bad7d809/usage"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions/64eca60b-2e55-4c38-8603-e9e6bad7d809/usage"'
       operationId: getSubscriptionUsage
 
   /subscriptions/{subscriptionId}/subscriber-info:
@@ -928,7 +1005,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/subscriptions/64eca60b-2e55-4c38-8603-e9e6bad7d809/subscriber-info"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions/64eca60b-2e55-4c38-8603-e9e6bad7d809/subscriber-info"'
       operationId: getSubscriberInfoBySubscriptionId
 
   /subscriptions/block-subscription:
@@ -986,7 +1063,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/subscriptions/block-subscription?subscriptionId=64eca60b-2e55-4c38-8603-e9e6bad7d809&blockState=PROD_ONLY_BLOCKED"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions/block-subscription?subscriptionId=64eca60b-2e55-4c38-8603-e9e6bad7d809&blockState=PROD_ONLY_BLOCKED"'
       operationId: blockSubscription
 
   /subscriptions/unblock-subscription:
@@ -1031,7 +1108,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/subscriptions/unblock-subscription?subscriptionId=64eca60b-2e55-4c38-8603-e9e6bad7d809"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/subscriptions/unblock-subscription?subscriptionId=64eca60b-2e55-4c38-8603-e9e6bad7d809"'
       operationId: unBlockSubscription
 
 
@@ -1087,7 +1164,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/throttling-policies/api"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/throttling-policies/api"'
 
   ######################################################
   # The "Subscription Throttling Based on Quota Type" resource APIs
@@ -1139,7 +1216,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/throttling-policies/streaming/subscription?limit=10&offset=0"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/throttling-policies/streaming/subscription?limit=10&offset=0"'
 
   ######################################################
   # The "Individual Throttling Tier" resource APIs
@@ -1200,7 +1277,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/throttling-policies/api/Platinum"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/throttling-policies/api/Platinum"'
 
   ######################################################
   # The "Content Search Results" resource APIs
@@ -1260,13 +1337,13 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/search?query=pizza"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/search?query=pizza"'
       operationId: search
 
   ######################################################
   # The "API Product Collection" resource APIs
   ######################################################
-  /api-products:
+  /backoffice-apis:
     get:
       tags:
         - API Products
@@ -1318,7 +1395,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products?query=PizzaAPIProduct"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis?query=PizzaAPIProduct"'
       operationId: getAllAPIProducts
 
     post:
@@ -1371,13 +1448,13 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/am/publisher/v3/api-products"'
+          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis"'
       operationId: createAPIProduct
 
   ################################################################
   # The "Individual API Product" resource APIs
   ################################################################
-  /api-products/{apiProductId}:
+  /backoffice-apis/{backofficeApiId}:
     get:
       tags:
         - API Products
@@ -1385,7 +1462,7 @@ paths:
       description: |
         Using this operation, you can retrieve complete details of a single API Product. You need to provide the Id of the API to retrive it.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/Accept'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
@@ -1432,7 +1509,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33"'
       operationId: getAPIProduct
 
     put:
@@ -1443,7 +1520,7 @@ paths:
         This operation can be used to update an existing API product.
         But the properties `name`, `provider` and `version` cannot be changed.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-Match'
       requestBody:
         description: API object that needs to be added
@@ -1498,7 +1575,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X PUT -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33"'
+          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33"'
       operationId: updateAPIProduct
 
 
@@ -1509,7 +1586,7 @@ paths:
       description: |
         This operation can be used to delete an existing API Product proving the Id of the API Product.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-Match'
       responses:
         200:
@@ -1531,10 +1608,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X DELETE -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33"'
       operationId: deleteAPIProduct
 
-  /api-products/{apiProductId}/thumbnail:
+  /backoffice-apis/{backofficeApiId}/thumbnail:
     get:
       tags:
         - API Products
@@ -1542,7 +1619,7 @@ paths:
       description: |
         This operation can be used to download a thumbnail image of an API product.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/Accept'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
@@ -1586,7 +1663,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/thumbnail"
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/thumbnail"
           > image.jpeg'
       operationId: getAPIProductThumbnail
 
@@ -1597,7 +1674,7 @@ paths:
       description: |
         This operation can be used to upload a thumbnail image of an API Product. The thumbnail to be uploaded should be given as a form data parameter `file`.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-Match'
       requestBody:
         content:
@@ -1656,10 +1733,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X PUT -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: multipart/form-data" -F file=@image.jpeg "https://127.0.0.1:9443/api/am/publisher/v3/api-products/d48a3412-1b85-49be-99f4-b81a3722ae73/thumbnail"'
+          -H "Content-Type: multipart/form-data" -F file=@image.jpeg "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/d48a3412-1b85-49be-99f4-b81a3722ae73/thumbnail"'
       operationId: updateAPIProductThumbnail
 
-  /api-products/{apiProductId}/documents:
+  /backoffice-apis/{backofficeApiId}/documents:
     get:
       tags:
         - API Product Documents
@@ -1667,7 +1744,7 @@ paths:
       description: |
         This operation can be used to retrive a list of documents belonging to an API Product by providing the ID of the API Product.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/Accept'
@@ -1709,7 +1786,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents"'
       operationId: getAPIProductDocuments
 
     post:
@@ -1719,7 +1796,7 @@ paths:
       description: |
         This operation can be used to add a new documentation to an API Product. This operation only adds the metadata of a document. To add the actual content we need to use **Upload the content of an API Product document ** API once we obtain a document Id by this operation.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
       requestBody:
         description: Document object that needs to be added
         content:
@@ -1765,10 +1842,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents"'
+          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents"'
       operationId: addAPIProductDocument
 
-  /api-products/{apiProductId}/documents/{documentId}:
+  /backoffice-apis/{backofficeApiId}/documents/{documentId}:
     get:
       tags:
         - API Product Documents
@@ -1776,7 +1853,7 @@ paths:
       description: |
         This operation can be used to retrieve a particular document's metadata associated with an API.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/documentId'
         - $ref: '#/components/parameters/Accept'
         - $ref: '#/components/parameters/If-None-Match'
@@ -1824,7 +1901,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
       operationId: getAPIProductDocument
 
     put:
@@ -1834,7 +1911,7 @@ paths:
       description: |
         This operation can be used to update metadata of an API's document.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/documentId'
         - $ref: '#/components/parameters/If-Match'
       requestBody:
@@ -1889,7 +1966,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X PUT -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
+          -H "Content-Type: application/json" -d @data.json "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
       operationId: updateAPIProductDocument
 
     delete:
@@ -1899,7 +1976,7 @@ paths:
       description: |
         This operation can be used to delete a document associated with an API Product.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/documentId'
         - $ref: '#/components/parameters/If-Match'
       responses:
@@ -1919,10 +1996,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X DELETE -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3"'
       operationId: deleteAPIProductDocument
 
-  /api-products/{apiProductId}/documents/{documentId}/content:
+  /backoffice-apis/{backofficeApiId}/documents/{documentId}/content:
     get:
       tags:
         - API Product Documents
@@ -1935,13 +2012,13 @@ paths:
         1. **Inline type**:
            The content of the document will be retrieved in `text/plain` content type
 
-           _Sample cURL_ : `curl -k -H "Authorization:Bearer 579f0af4-37be-35c7-81a4-f1f1e9ee7c51" -F inlineContent=@"docs.txt" -X POST "https://localhost:9443/api/am/publisher/v3/apis/995a4972-3178-4b17-a374-756e0e19127c/documents/43c2bcce-60e7-405f-bc36-e39c0c5e189e/content`
+           _Sample cURL_ : `curl -k -H "Authorization:Bearer 579f0af4-37be-35c7-81a4-f1f1e9ee7c51" -F inlineContent=@"docs.txt" -X POST "https://localhost:9443/api/apk/backoffice/v1/apis/995a4972-3178-4b17-a374-756e0e19127c/documents/43c2bcce-60e7-405f-bc36-e39c0c5e189e/content`
         2. **FILE type**:
            The file will be downloaded with the related content type (eg. `application/pdf`)
         3. **URL type**:
             The client will recieve the URL of the document as the Location header with the response with - `303 See Other`
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/documentId'
         - $ref: '#/components/parameters/Accept'
         - $ref: '#/components/parameters/If-None-Match'
@@ -1997,7 +2074,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3/content"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3/content"'
       operationId: getAPIProductDocumentContent
 
     post:
@@ -2012,7 +2089,7 @@ paths:
         * Document's source type should be **FILE** in order to upload a file to the document using **file** parameter.
         * Document's source type should be **INLINE** in order to add inline content to the document using **inlineContent** parameter.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/documentId'
         - $ref: '#/components/parameters/If-Match'
       requestBody:
@@ -2072,10 +2149,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          -H "Content-Type: multipart/form-data" -F file=@sample.pdf "https://127.0.0.1:9443/api/am/publisher/v3/api-products/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3/content"'
+          -H "Content-Type: multipart/form-data" -F file=@sample.pdf "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/5bca47e1-8233-46a5-9295-525dca337f33/documents/83312daf-0d8a-427b-8f72-12755b7901d3/content"'
       operationId: addAPIProductDocumentContent
 
-  /api-products/export:
+  /backoffice-apis/export:
     get:
       tags:
         - Import Export
@@ -2156,11 +2233,11 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/export?name=LeasingAPIProduct&version=1.0.0&revisionNumber=2&provider=admin&format=YAML"
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/export?name=LeasingAPIProduct&version=1.0.0&revisionNumber=2&provider=admin&format=YAML"
           > exportAPIProduct.zip'
       operationId: exportAPIProduct
 
-  /api-products/import:
+  /backoffice-apis/import:
     post:
       tags:
         - Import Export
@@ -2232,7 +2309,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            -F file=@admin-PizzaShackAPIProduct.zip "https://127.0.0.1:9443/api/am/publisher/v3/api-products/import?preserveProvider=false&overwriteAPIProduct=false&overwriteAPIs=false&importAPIs=false"'
+            -F file=@admin-PizzaShackAPIProduct.zip "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/import?preserveProvider=false&overwriteAPIProduct=false&overwriteAPIs=false&importAPIs=false"'
       operationId: importAPIProduct
 
   /runtime-apis/{apiId}/graphql-schema:
@@ -2288,7 +2365,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/e0824883-3e86-403a-aec1-22bbc454eb7c/graphql-schema"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/e0824883-3e86-403a-aec1-22bbc454eb7c/graphql-schema"'
       operationId: getAPIGraphQLSchema
 
   ######################################################
@@ -2320,7 +2397,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/external-stores"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/external-stores"'
 
   ######################################################
   # The BackOffice settings resource APIs
@@ -2379,7 +2456,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-categories"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/api-categories"'
       operationId: getAllAPICategories
 
   /runtime-apis/{apiId}/asyncapi:
@@ -2437,9 +2514,9 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-            "https://127.0.0.1:9443/api/am/publisher/v3/runtime-apis/01234567-0123-0123-0123-012345678901/asyncapi"'
+            "https://127.0.0.1:9443/api/apk/backoffice/v1/runtime-apis/01234567-0123-0123-0123-012345678901/asyncapi"'
 
-  /api-products/change-lifecycle:
+  /backoffice-apis/change-lifecycle:
     post:
       tags:
         - API Product Lifecycle
@@ -2480,10 +2557,10 @@ paths:
             2. **Requires re-subscription when publishing the API**: If you set this to true, users need to re subscribe to the API Products although they may have subscribed to an older version.
             You can specify additional checklist items by using an **"attribute:"** modifier.
             Eg: "Deprecate old versions after publishing the API:true" will deprecate older versions of a particular API Product when it is promoted to Published state from Created state. Multiple checklist items can be given in "attribute1:true, attribute2:false" format.
-            **Sample CURL :**  curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8" -X POST "https://localhost:9443/api/am/publisher/v3/api-products/change-lifecycle?apiId=890a4f4d-09eb-4877-a323-57f6ce2ed79b&action=Publish&lifecycleChecklist=Deprecate%20old%20versions%20after%20publishing%20the%20API%3Atrue,Requires%20re-subscription%20when%20publishing%20the%20API%3Afalse"
+            **Sample CURL :**  curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8" -X POST "https://localhost:9443/api/apk/backoffice/v1/backoffice-apis/change-lifecycle?apiId=890a4f4d-09eb-4877-a323-57f6ce2ed79b&action=Publish&lifecycleChecklist=Deprecate%20old%20versions%20after%20publishing%20the%20API%3Atrue,Requires%20re-subscription%20when%20publishing%20the%20API%3Afalse"
           schema:
             type: string
-        - $ref: '#/components/parameters/apiProductId-Q'
+        - $ref: '#/components/parameters/backofficeApiId-Q'
         - $ref: '#/components/parameters/If-Match'
       responses:
         200:
@@ -2512,10 +2589,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X POST -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/change-lifecycle?apiId=890a4f4d-09eb-4877-a323-57f6ce2ed79b&action=Publish"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/change-lifecycle?apiId=890a4f4d-09eb-4877-a323-57f6ce2ed79b&action=Publish"'
       operationId: changeAPIProductLifecycle
 
-  /api-products/{apiProductId}/lifecycle-history:
+  /backoffice-apis/{backofficeApiId}/lifecycle-history:
     get:
       tags:
         - API Product Lifecycle
@@ -2523,7 +2600,7 @@ paths:
       description: |
         This operation can be used to retrieve Lifecycle state change history of the API Products.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
         200:
@@ -2547,10 +2624,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-history"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-history"'
       operationId: getAPIProductLifecycleHistory
 
-  /api-products/{apiProductId}/lifecycle-state:
+  /backoffice-apis/{backofficeApiId}/lifecycle-state:
     get:
       tags:
         - API Product Lifecycle
@@ -2558,7 +2635,7 @@ paths:
       description: |
         This operation can be used to retrieve Lifecycle state data of the API Product.
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
         200:
@@ -2583,10 +2660,10 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-state"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-state"'
       operationId: getAPIProductLifecycleState
 
-  /api-products/{apiProductId}/lifecycle-state/pending-tasks:
+  /backoffice-apis/{backofficeApiId}/lifecycle-state/pending-tasks:
     delete:
       tags:
         - API Product Lifecycle
@@ -2594,7 +2671,7 @@ paths:
       description: |
         This operation can be used to remove pending lifecycle state change requests that are in pending state
       parameters:
-        - $ref: '#/components/parameters/apiProductId'
+        - $ref: '#/components/parameters/backofficeApiId'
       responses:
         200:
           description: |
@@ -2614,7 +2691,7 @@ paths:
       x-code-samples:
         - lang: Curl
           source: 'curl -k -X DELETE -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
-          "https://127.0.0.1:9443/api/am/publisher/v3/api-products/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-state/pending-tasks"'
+          "https://127.0.0.1:9443/api/apk/backoffice/v1/backoffice-apis/890a4f4d-09eb-4877-a323-57f6ce2ed79b/lifecycle-state/pending-tasks"'
       operationId: deleteAPIProductLifecycleStatePendingTasks
 
 components:
@@ -2691,6 +2768,73 @@ components:
         fullName:
           type: string
           example: John David
+    RuntimeList:
+      title: Runtime List
+      type: object
+      properties:
+        count:
+          type: integer
+          description: |
+            Number of Runtimes returned.
+          example: 1
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuntimeInfo'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    RuntimeInfo:
+      title: Runtime Info object with basic Runtime details.
+      type: object
+      properties:
+        id:
+          type: string
+          example: 01234567-0123-0123-0123-012345678901
+        name:
+          type: string
+          example: RuntimeDev1
+        description:
+          type: string
+          example: Runtime 1 used for dev
+    Runtime:
+      title: Runtime object.
+      type: object
+      properties:
+        id:
+          type: string
+          example: 01234567-0123-0123-0123-012345678901
+        name:
+          type: string
+          example: RuntimeDev1
+        description:
+          type: string
+          example: Runtime 1 used for dev
+        apiList:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuntimeAPISummary'
+    RuntimeAPISummary:
+      title: Runtime API Info object with basic API details.
+      type: object
+      properties:
+        id:
+          type: string
+          example: 01234567-0123-0123-0123-012345678901
+        name:
+          type: string
+          example: CalculatorAPI
+        description:
+          type: string
+          example: A calculator API that supports basic operations
+        context:
+          type: string
+          example: CalculatorAPI
+        version:
+          type: string
+          example: 1.0.0
+        type:
+          type: string
+          example: HTTP
     APIList:
       title: API List
       type: object
@@ -2750,46 +2894,15 @@ components:
         version:
           type: string
           example: 1.0.0
-        provider:
-          type: string
-          description: |
-            If the provider value is not given, the user invoking the API will be used as the provider.
-          example: admin
         type:
           type: string
           example: HTTP
-        audience:
-          type: string
-          description: The audience of the API. Accepted values are PUBLIC, SINGLE
-          example: PUBLIC
-          enum:
-            - PUBLIC
-            - SINGLE
-        lifeCycleStatus:
-          type: string
-          example: CREATED
-        workflowStatus:
-          type: string
-          example: APPROVED
-        hasThumbnail:
-          type: boolean
-          example: true
-        securityScheme:
-          type: array
-          items:
-            type: string
         createdTime:
           type: string
           example : 2021-02-11 09:57:25
         updatedTime:
           type: string
           example : 2021-02-11 09:57:25
-        gatewayVendor:
-          type: string
-          example: wso2
-        advertiseOnly:
-          type: boolean
-          example: true
 
     API:
       title: API object
@@ -2826,33 +2939,6 @@ components:
           type: string
           pattern: '^[^~!@#;:%^*()+={}|\\<>"'',&/$\[\]\s+\/]+$'
           example: 1.0.0
-        provider:
-          maxLength: 50
-          type: string
-          description: |
-            If the provider value is not given user invoking the api will be used as the provider.
-          example: admin
-        lifeCycleStatus:
-          type: string
-          example: CREATED
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
-        wsdlInfo:
-          $ref: '#/components/schemas/WSDLInfo'
-        wsdlUrl:
-          type: string
-          readOnly: true
-          example: /apimgt/applicationdata/wsdls/admin--soap1.wsdl
-        responseCachingEnabled:
-          type: boolean
-          example: true
-        cacheTimeout:
-          type: integer
-          example: 300
-        hasThumbnail:
-          type: boolean
-          example: false
         isDefaultVersion:
           type: boolean
           example: false
@@ -2868,9 +2954,6 @@ components:
         revisionId:
           type: integer
           example: 1
-        enableSchemaValidation:
-          type: boolean
-          example: false
         type:
           type: string
           description: The api creation type to be used. Accepted values are HTTP,
@@ -2887,13 +2970,6 @@ components:
             - SSE
             - WEBHOOK
             - ASYNC
-        audience:
-          type: string
-          description: The audience of the API. Accepted values are PUBLIC, SINGLE
-          example: PUBLIC
-          enum:
-            - PUBLIC
-            - SINGLE
         transport:
           type: array
           description: |
@@ -2913,23 +2989,6 @@ components:
           x-otherScopes:
             - apim:api_publish
             - apim:api_manage
-        policies:
-          type: array
-          example:
-            - Unlimited
-          items:
-            type: string
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
-        apiThrottlingPolicy:
-          type: string
-          description: The API level throttling policy selected for the particular
-            API
-          example: Unlimited
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
         authorizationHeader:
           type: string
           pattern: '(^[^~!@#;:%^*()+={}|\\<>"'',&$\s+]*$)'
@@ -2944,64 +3003,6 @@ components:
             it is not set OAuth2 will be set as the security for the current API.
           example:
             - oauth2
-          items:
-            type: string
-        maxTps:
-          $ref: '#/components/schemas/APIMaxTps'
-        visibility:
-          type: string
-          description: The visibility level of the API. Accepts one of the following.
-            PUBLIC, PRIVATE, RESTRICTED.
-          example: PUBLIC
-          default: PUBLIC
-          enum:
-            - PUBLIC
-            - PRIVATE
-            - RESTRICTED
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
-        visibleRoles:
-          type: array
-          description: The user roles that are able to access the API in Developer Portal
-          example: []
-          items:
-            type: string
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
-        visibleTenants:
-          type: array
-          example: []
-          items:
-            type: string
-        mediationPolicies:
-          type: array
-          example:
-            - name: json_to_xml_in_message
-              type: in
-            - name: xml_to_json_out_message
-              type: out
-            - name: json_fault
-              type: fault
-          items:
-            $ref: '#/components/schemas/MediationPolicy'
-        subscriptionAvailability:
-          type: string
-          description: The subscription availability. Accepts one of the following.
-            CURRENT_TENANT, ALL_TENANTS or SPECIFIC_TENANTS.
-          example: CURRENT_TENANT
-          default: CURRENT_TENANT
-          enum:
-            - CURRENT_TENANT
-            - ALL_TENANTS
-            - SPECIFIC_TENANTS
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
-        subscriptionAvailableTenants:
-          type: array
-          example: []
           items:
             type: string
         additionalProperties:
@@ -3034,39 +3035,8 @@ components:
           x-otherScopes:
             - apim:api_publish
             - apim:api_manage
-        monetization:
-          $ref: '#/components/schemas/APIProductMonetizationInfo'
-        accessControl:
-          type: string
-          description: |
-            Is the API is restricted to certain set of publishers or creators or is it visible to all the
-            publishers and creators. If the accessControl restriction is none, this API can be modified by all the
-            publishers and creators, if not it can only be viewable/modifiable by certain set of publishers and creators,
-             based on the restriction.
-          default: NONE
-          enum:
-            - NONE
-            - RESTRICTED
-        accessControlRoles:
-          type: array
-          description: The user roles that are able to view/modify as API publisher
-            or creator.
-          example: []
-          items:
-            type: string
-        businessInformation:
-          allOf:
-            - $ref: '#/components/schemas/APIBusinessInformation'
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
         corsConfiguration:
           $ref: '#/components/schemas/APICorsConfiguration'
-        websubSubscriptionConfiguration:
-          $ref: '#/components/schemas/WebsubSubscriptionConfiguration'
-        workflowStatus:
-          type: string
-          example: APPROVED
         createdTime:
           type: string
         lastUpdatedTime:
@@ -3074,110 +3044,6 @@ components:
           x-otherScopes:
             - apim:api_publish
             - apim:api_manage
-        endpointConfig:
-          type: object
-          properties: {}
-          description: |
-            Endpoint configuration of the API. This can be used to provide different types of endpoints including Simple REST Endpoints, Loadbalanced and Failover.
-
-            `Simple REST Endpoint`
-              {
-                "endpoint_type": "http",
-                "sandbox_endpoints":       {
-                   "url": "https://localhost:9443/am/sample/pizzashack/v3/api/"
-                },
-                "production_endpoints":       {
-                   "url": "https://localhost:9443/am/sample/pizzashack/v3/api/"
-                }
-              }
-
-            `Loadbalanced Endpoint`
-
-              {
-                "endpoint_type": "load_balance",
-                "algoCombo": "org.apache.synapse.endpoints.algorithms.RoundRobin",
-                "sessionManagement": "",
-                "sandbox_endpoints":       [
-                            {
-                      "url": "https://localhost:9443/am/sample/pizzashack/v3/api/1"
-                   },
-                            {
-                      "endpoint_type": "http",
-                      "template_not_supported": false,
-                      "url": "https://localhost:9443/am/sample/pizzashack/v3/api/2"
-                   }
-                ],
-                "production_endpoints":       [
-                            {
-                      "url": "https://localhost:9443/am/sample/pizzashack/v3/api/3"
-                   },
-                            {
-                      "endpoint_type": "http",
-                      "template_not_supported": false,
-                      "url": "https://localhost:9443/am/sample/pizzashack/v3/api/4"
-                   }
-                ],
-                "sessionTimeOut": "",
-                "algoClassName": "org.apache.synapse.endpoints.algorithms.RoundRobin"
-              }
-
-            `Failover Endpoint`
-
-              {
-                "production_failovers":[
-                   {
-                      "endpoint_type":"http",
-                      "template_not_supported":false,
-                      "url":"https://localhost:9443/am/sample/pizzashack/v3/api/1"
-                   }
-                ],
-                "endpoint_type":"failover",
-                "sandbox_endpoints":{
-                   "url":"https://localhost:9443/am/sample/pizzashack/v3/api/2"
-                },
-                "production_endpoints":{
-                   "url":"https://localhost:9443/am/sample/pizzashack/v3/api/3"
-                },
-                "sandbox_failovers":[
-                   {
-                      "endpoint_type":"http",
-                      "template_not_supported":false,
-                      "url":"https://localhost:9443/am/sample/pizzashack/v3/api/4"
-                   }
-                ]
-              }
-
-            `Default Endpoint`
-
-              {
-                "endpoint_type":"default",
-                "sandbox_endpoints":{
-                   "url":"default"
-                },
-                "production_endpoints":{
-                   "url":"default"
-                }
-              }
-
-            `Endpoint from Endpoint Registry`
-              {
-                "endpoint_type": "Registry",
-                "endpoint_id": "{registry-name:entry-name:version}",
-              }
-          example:
-            endpoint_type: http
-            sandbox_endpoints:
-              url: https://localhost:9443/am/sample/pizzashack/v3/api/
-            production_endpoints:
-              url: https://localhost:9443/am/sample/pizzashack/v3/api/
-        endpointImplementationType:
-          type: string
-          example: INLINE
-          default: ENDPOINT
-          enum:
-            - INLINE
-            - ENDPOINT
-            - MOCKED_OAS
         scopes:
           type: array
           items:
@@ -3195,18 +3061,6 @@ components:
               throttlingPolicy: Unlimited
           items:
             $ref: '#/components/schemas/APIOperations'
-        threatProtectionPolicies:
-          type: object
-          properties:
-            list:
-              type: array
-              items:
-                type: object
-                properties:
-                  policyId:
-                    type: string
-                  priority:
-                    type: integer
         categories:
           type: array
           description: |
@@ -3216,49 +3070,6 @@ components:
             example: ""
           x-otherScopes:
             - apim:api_publish
-        keyManagers:
-          type: object
-          properties: {}
-          description: |
-            API Key Managers
-          readOnly: true
-        serviceInfo:
-          type: object
-          properties:
-            key:
-              type: string
-              example: PetStore-1.0.0
-            name:
-              type: string
-              example: PetStore
-            version:
-              type: string
-              example: 1.0.0
-            outdated:
-              type: boolean
-              example: false
-        advertiseInfo:
-          $ref: '#/components/schemas/AdvertiseInfo'
-        gatewayVendor:
-          title: field to identify gateway vendor
-          type: string
-          example:
-            wso2
-        gatewayType:
-          title: Field to identify gateway type.
-          type: string
-          description: The gateway type selected for the API policies. Accepts one of the
-            following. wso2/synapse, wso2/choreo-connect.
-          example: wso2/synapse
-        asyncTransportProtocols:
-          type: array
-          description: |
-            Supported transports for the async API (http and/or https).
-          example:
-            - http
-            - https
-          items:
-            type: string
       x-scopes:
         - apim:api_create
         - apim:api_import_export
@@ -4265,24 +4076,6 @@ components:
           additionalProperties:
             type: string
           description: Map of custom properties related to API revenue
-    MediationPolicy:
-      title: Mediation Policy
-      required:
-        - name
-      type: object
-      properties:
-        id:
-          type: string
-          example: 69ea3fa6-55c6-472e-896d-e449dd34a824
-        name:
-          type: string
-          example: log_in_message
-        type:
-          type: string
-          example: in
-        shared:
-          type: boolean
-          example: true
     Error:
       title: Error object returned with 4XX HTTP Status
       required:
@@ -4421,51 +4214,6 @@ components:
           type: string
           description: media-type of the file
           example: image/jpeg
-    APIMaxTps:
-      type: object
-      properties:
-        production:
-          type: integer
-          format: int64
-          example: 1000
-        sandbox:
-          type: integer
-          format: int64
-          example: 1000
-    APIBusinessInformation:
-      type: object
-      properties:
-        businessOwner:
-          maxLength: 120
-          type: string
-          example: businessowner
-        businessOwnerEmail:
-          type: string
-          example: businessowner@wso2.com
-        technicalOwner:
-          maxLength: 120
-          type: string
-          example: technicalowner
-        technicalOwnerEmail:
-          type: string
-          example: technicalowner@wso2.com
-    WebsubSubscriptionConfiguration:
-      type: object
-      properties:
-        enable:
-          type: boolean
-          default: false
-          description: Toggle enable WebSub subscription configuration
-        secret:
-          type: string
-          description: Secret key to be used for subscription
-        signingAlgorithm:
-          type: string
-          description: The algorithm used for signing
-        signatureHeader:
-          type: string
-          description: The header uses to send the signature
-
     APICorsConfiguration:
       type: object
       properties:
@@ -4892,31 +4640,6 @@ components:
           type: string
           description: |
             Default value of the attribute
-    AdvertiseInfo:
-      title: API Advertise info object with advertise details
-      type: object
-      properties:
-        advertised:
-          type: boolean
-          example: true
-        apiExternalProductionEndpoint:
-          type: string
-          example: https://localhost:9443/devportal
-        apiExternalSandboxEndpoint:
-          type: string
-          example: https://localhost:9443/devportal
-        originalDevPortalUrl:
-          type: string
-          example: https://localhost:9443/devportal
-        apiOwner:
-          type: string
-          example: admin
-        vendor:
-          type: string
-          default: WSO2
-          enum:
-            - WSO2
-            - AWS
     APICategory:
       title: API Category
       required:
@@ -5150,6 +4873,14 @@ components:
       in: path
       description: |
         **API ID** consisting of the **UUID** of the API.
+      required: true
+      schema:
+        type: string
+    runtimeId:
+      name: runtimeId
+      in: path
+      description: |
+        **Runtime ID** consisting of the **UUID** of the Runtime.
       required: true
       schema:
         type: string
@@ -5460,8 +5191,8 @@ components:
           retirieved from.
       schema:
         type: string
-    apiProductId:
-      name: apiProductId
+    backofficeApiId:
+      name: backofficeApiId
       in: path
       description: |
         **API Product ID** consisting of the **UUID** of the API Product. Using the **UUID** in the API call is recommended.
@@ -5506,8 +5237,8 @@ components:
       required: true
       schema:
         type: string
-    apiProductId-Q:
-      name: apiProductId
+    backofficeApiId-Q:
+      name: backofficeApiId
       in: query
       description: |
         **API Product ID** consisting of the **UUID** of the API Product.
