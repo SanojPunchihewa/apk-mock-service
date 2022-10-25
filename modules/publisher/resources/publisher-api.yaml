@@ -202,7 +202,6 @@ paths:
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/sortBy'
         - $ref: '#/components/parameters/sortOrder'
-        - $ref: '#/components/parameters/requestedTenant'
         - name: query
           in: query
           description: |
@@ -280,7 +279,6 @@ paths:
       parameters:
         - $ref: '#/components/parameters/runtimeId'
         - $ref: '#/components/parameters/apiId'
-        - $ref: '#/components/parameters/requestedTenant'
         - $ref: '#/components/parameters/If-None-Match'
       responses:
         200:
@@ -2617,32 +2615,6 @@ components:
         description:
           type: string
           example: Runtime 1 used for dev
-        apiList:
-          type: array
-          items:
-            $ref: '#/components/schemas/RuntimeAPISummary'
-    RuntimeAPISummary:
-      title: Runtime API Info object with basic API details.
-      type: object
-      properties:
-        id:
-          type: string
-          example: 01234567-0123-0123-0123-012345678901
-        name:
-          type: string
-          example: CalculatorAPI
-        description:
-          type: string
-          example: A calculator API that supports basic operations
-        context:
-          type: string
-          example: CalculatorAPI
-        version:
-          type: string
-          example: 1.0.0
-        type:
-          type: string
-          example: HTTP
     APIList:
       title: API List
       type: object
@@ -2675,30 +2647,6 @@ components:
         context:
           type: string
           example: CalculatorAPI
-        additionalProperties:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              value:
-                type: string
-              display:
-                type: boolean
-          description: Map of custom properties of API
-        additionalPropertiesMap:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              name:
-                type: string
-              value:
-                type: string
-              display:
-                type: boolean
-                default: false
         version:
           type: string
           example: 1.0.0
@@ -2747,21 +2695,6 @@ components:
           type: string
           pattern: '^[^~!@#;:%^*()+={}|\\<>"'',&/$\[\]\s+\/]+$'
           example: 1.0.0
-        isDefaultVersion:
-          type: boolean
-          example: false
-        isRevision:
-          type: boolean
-          example: false
-        revisionedApiId:
-          type: string
-          description: |
-            UUID of the api registry artifact
-          readOnly: true
-          example: 01234567-0123-0123-0123-012345678901
-        revisionId:
-          type: integer
-          example: 1
         type:
           type: string
           description: The api creation type to be used. Accepted values are HTTP,
@@ -2787,16 +2720,6 @@ components:
             - https
           items:
             type: string
-        tags:
-          type: array
-          example:
-            - pizza
-            - food
-          items:
-            type: string
-          x-otherScopes:
-            - apim:api_publish
-            - apim:api_manage
         authorizationHeader:
           type: string
           pattern: '(^[^~!@#;:%^*()+={}|\\<>"'',&$\s+]*$)'
@@ -2852,10 +2775,6 @@ components:
           x-otherScopes:
             - apim:api_publish
             - apim:api_manage
-        scopes:
-          type: array
-          items:
-            $ref: '#/components/schemas/APIScope'
         operations:
           type: array
           example:
@@ -2869,15 +2788,6 @@ components:
               throttlingPolicy: Unlimited
           items:
             $ref: '#/components/schemas/APIOperations'
-        categories:
-          type: array
-          description: |
-            API categories
-          items:
-            type: string
-            example: ""
-          x-otherScopes:
-            - apim:api_publish
       x-scopes:
         - apim:api_create
         - apim:api_import_export
@@ -2906,6 +2816,8 @@ components:
           readOnly: true
           type: string
           format: date-time
+        runtimeInfo:
+          $ref: '#/components/schemas/APIRevisionRuntimeInfo'          
         apiInfo:
           $ref: '#/components/schemas/APIRevisionAPIInfo'
         deploymentInfo:
@@ -2913,6 +2825,13 @@ components:
           readOnly: true
           items:
             $ref: '#/components/schemas/APIRevisionDeployment'
+    APIRevisionRuntimeInfo:
+      title: Runtime Info object with basic Revisioned API details
+      readOnly: true
+      properties:
+        id:
+          type: string
+          example: 01234567-0123-0123-0123-012345678901
 
     #-----------------------------------------------------
     # The API Revision - API Info resource
@@ -2973,9 +2892,6 @@ components:
           pattern: '^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$'
           type: string
           example: mg.wso2.com
-        displayOnDevportal:
-          type: boolean
-          example: true
         deployedTime:
           readOnly: true
           type: string
